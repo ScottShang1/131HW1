@@ -20,3 +20,12 @@
 #Mechanistic assume a parametric form. It relies on known formula and parameters. It can add parameters to add more flexibility, but too many parameters may overfit the model. It won't match true unknown f.
 #Empirically-driven means the model has no assumptions about f. It require a large number of observations. By default, it has much more flexibility than mechanistic models. It also has the risk of overfitting.
 #(Lec2 pg6)
+#
+#bias-variance tradeoff didn't covered in class.
+
+#Question 6:
+#The first question is predictive, since it using a set of information to predict outcome(who will they vote).
+#The second question is inferential. It want to test whether the feature 'having contact with the candidate' is significant regarding the outcome. We want to observed the pattern with that feature.
+#(Lec2 pg7)
+
+install.packages("tidyverse")
