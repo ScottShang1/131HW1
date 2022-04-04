@@ -3,9 +3,9 @@ title: "131 Homework1"
 author: "Scott Shang (8458655)"
 date: "`r format(Sys.Date(), '%B %d, %Y')`"
 output:
+  pdf_document: default
   html_document:
     df_print: paged
-  pdf_document: default
 ---
 
 ---
@@ -97,70 +97,8 @@ Ex5:
 ```{r}
 install.packages('corrplot')
 library(corrplot)
-corrplot(mpg, tl.col = "red", tl.srt = 45, bg = "White",
-         title = "\n\n Correlation Plot Of Gambling Data",
-         type = "lower")
+newmpg=subset(mpg,select=-c(manufacturer, drv, model, trans, fl, class))
+cormpg=cor(newmpg)
+corrplot(cormpg,type="lower")
 ```
-2.853223-2.63000=0.22323
-On average, holding all other predictor variables fixed, the difference between the mpg of
-a Japanese car and the mpg of an European car is 0.22323.
-
-
-(1f)
-```{r}
-mod2=lm(mpg~factor(origin)*horsepower,data=Auto)
-summary(mod2)
-```
-The fitted linear model:
-$mpg=34.4765+10.9972*I(origin=European)+14.3397*I(origin=Japan)-0.1213*horsepower-\\0.1005*horsepower*I(origin=European)-0.1087*horsepower*I(origin=Japan)$
-
-(1g)
--0.1213-0.1087=-0.23
-On average, the mpg of a Japanese car change with a one-unit increase in horsepower is -0.23.
-
-(1h)
-h)
-```{r}
-summary(lm(formula=mpg~weight,data=Auto))
-plot(lm(formula=mpg~weight,data=Auto))
-summary(lm(formula=mpg~weight+I(weight^2),data=Auto))
-plot(lm(formula=mpg~weight+I(weight^2),data=Auto))
-summary(lm(formula=mpg~weight+I(weight^2)+I(weight^3),data=Auto))
-plot(lm(formula=mpg~weight+I(weight^2)+I(weight^3),data=Auto))
-```
-
-The degree of the polynomial which fitted with mpg as the response variable and weight as the predictor has a degree of 2, since we observe that while the degree is greater than 2, the Residuals vs Fitted plot is mostly flat. Also we failed to reject the null hypothesis while degree is 3.
-
-(1i)
-```{r}
-library(leaps)
-select.mod=regsubsets(mpg~cylinders+displacement+horsepower+weight+acceleration+year+origin,data=Auto,method="backward")
-result=summary(select.mod)
-result
-result$adjr2
-which.max(result$adjr2)
-```
-Based on the adjusted R2 criterion, the model with 6 predictors is the best. The best model has cylinders, displacement, horsepower, weight, year, and origin as predictor variables.
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
-```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+For example, displacement is positively correlated to cylinder numbers, city mpg is positively correlated to highway mpg, and cylinder number is negatively correlated to city or highway mpg. Those relationship make sense to me. Non of them is surprising.
