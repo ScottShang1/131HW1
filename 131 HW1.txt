@@ -1,0 +1,3 @@
+https://github.com/ScottShang1/PSTAT131
+
+Something was wrong with my RStudio. I can't merge the file, so I took screenshots and convert them into a pdf file.

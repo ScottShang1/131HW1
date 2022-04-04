@@ -101,4 +101,4 @@ newmpg=subset(mpg,select=-c(manufacturer, drv, model, trans, fl, class))
 cormpg=cor(newmpg)
 corrplot(cormpg,type="lower")
 ```
-For example, displacement is positively correlated to cylinder numbers, city mpg is positively correlated to highway mpg, and cylinder number is negatively correlated to city or highway mpg. Those relationship make sense to me. Non of them is surprising.
+For example, displacement is positively correlated to cylinder numbers, city mpg is positively correlated to highway mpg, and cylinder number is negatively correlated to city or highway mpg. Those relationships make sense to me. None of them is surprising.
