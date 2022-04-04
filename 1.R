@@ -29,3 +29,7 @@
 #(Lec2 pg7)
 
 install.packages("tidyverse")
+library(tidyverse)
+mpg
+h=hist(mpg$hwy,xlim=c(10,45),ylim=c(0,50),breaks=20)
+text(h$mids,h$counts,labels=h$counts, adj=c(0.5, -0.5))
