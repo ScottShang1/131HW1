@@ -1,10 +1,146 @@
 ---
-title: "131 HW1"
-author: "Scott Shang"
-date: '2022-04-04'
-output: html_document
+title: "131 Homework1"
+author: "Scott Shang (8458655)"
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+output:
+  html_document:
+    df_print: paged
+  pdf_document: default
 ---
 
+---
+title: "131 Homework1"
+author: "Scott Shang (8458655)"
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+output: pdf_document
+---
+
+
+```{r setup, echo=FALSE}
+library(knitr)
+# set global chunk options: images will be 7x5 inches
+knitr::opts_chunk$set(fig.width=7, fig.height=5)
+options(digits = 4)
+
+
+## indents are for indenting r code as formatted text
+## They may need to be adjusted depending on your OS
+# if your output looks odd, increase or decrease indent
+indent1 = '    '
+indent2 = '        '
+indent3 = '            '
+```
+
+
+Question 1:
+Supervised learning: Machine learning that including prediction, estimation, model selection, and inference.
+To be specific, supervised learning can accurately predict future response given predictors, understand how predictors affect response, select the best model, and assess the quality of predictions and estimation.
+Unsupervised learning don't have a supervisor, and the model work on its own. (From Lec1 pg30)
+
+Question 2:
+In the context of machine learning, the regression model is where the response variable Y is quantitative. To be specific, Y are numerical values.
+For the classification model, the response variable Y is qualitative, i.e. categorical values. (Lec1 31)
+
+Question 3:
+Didn't covered.
+
+Question 4:
+Descriptive models: Choose model to best visually emphasize a trend in data.
+Inferential models focus on those features are essential. It is aimed to test theories and possibly causal claims. It also state the relationship between outcome and predictors.
+Predictive models answer what combo of features fits the model best. And it aims to predict Y with minimum reducible error. It doesn't focus on hypothesis tests.
+(Lec2 pg7)
+
+Question 5:
+Mechanistic assume a parametric form. It relies on known formula and parameters. It can add parameters to add more flexibility, but too many parameters may overfit the model. It won't match true unknown f.
+Empirically-driven means the model has no assumptions about f. It require a large number of observations. By default, it has much more flexibility than mechanistic models. It also has the risk of overfitting.
+(Lec2 pg6)
+bias-variance tradeoff didn't covered in class.
+
+Question 6:
+The first question is predictive, since it using a set of information to predict outcome(who will they vote).
+The second question is inferential. It want to test whether the feature 'having contact with the candidate' is significant regarding the outcome. We want to observed the pattern with that feature.
+(Lec2 pg7)
+
+
+Ex1:
+```{r}
+library(tidyverse)
+mpg
+h=hist(mpg$hwy,xlim=c(10,45),ylim=c(0,50),breaks=20)
+text(h$mids,h$counts,labels=h$counts, adj=c(0.5, -0.5))
+```
+We notice that most vehicles' highway mpg are between 15-30 mpg. It's kind of like a normal distribution but not close.
+
+Ex2:
+```{r}
+plot(mpg$hwy, mpg$cty, xlab="highway mpg", ylab="city mpg", pch=19)
+```
+We notice that there is a possible relationship between highway mpg and city mpg.
+That means a car with higher hwy mpg are likely to have higher city mpg. And vice versa. 
+
+Ex3:
+```{r}
+count=sort(table(mpg$manufacturer))
+barplot(count,horiz=TRUE,las=2,cex.names = 0.8)
+```
+As we can see, Dodge produced the most, and Lincoln produced the least.
+
+
+Ex4:
+```{r}
+boxplot(hwy~cyl, data=mpg, xlab="Number of Cylinders", ylab="Miles Per Gallon(HWY)")
+```
+Cars with less cylinders tend to have higher mpg. We can say that cylinder number and hwy mpg are negatively correlated.
+
+
+Ex5:
+```{r}
+install.packages('corrplot')
+library(corrplot)
+corrplot(mpg, tl.col = "red", tl.srt = 45, bg = "White",
+         title = "\n\n Correlation Plot Of Gambling Data",
+         type = "lower")
+```
+2.853223-2.63000=0.22323
+On average, holding all other predictor variables fixed, the difference between the mpg of
+a Japanese car and the mpg of an European car is 0.22323.
+
+
+(1f)
+```{r}
+mod2=lm(mpg~factor(origin)*horsepower,data=Auto)
+summary(mod2)
+```
+The fitted linear model:
+$mpg=34.4765+10.9972*I(origin=European)+14.3397*I(origin=Japan)-0.1213*horsepower-\\0.1005*horsepower*I(origin=European)-0.1087*horsepower*I(origin=Japan)$
+
+(1g)
+-0.1213-0.1087=-0.23
+On average, the mpg of a Japanese car change with a one-unit increase in horsepower is -0.23.
+
+(1h)
+h)
+```{r}
+summary(lm(formula=mpg~weight,data=Auto))
+plot(lm(formula=mpg~weight,data=Auto))
+summary(lm(formula=mpg~weight+I(weight^2),data=Auto))
+plot(lm(formula=mpg~weight+I(weight^2),data=Auto))
+summary(lm(formula=mpg~weight+I(weight^2)+I(weight^3),data=Auto))
+plot(lm(formula=mpg~weight+I(weight^2)+I(weight^3),data=Auto))
+```
+
+The degree of the polynomial which fitted with mpg as the response variable and weight as the predictor has a degree of 2, since we observe that while the degree is greater than 2, the Residuals vs Fitted plot is mostly flat. Also we failed to reject the null hypothesis while degree is 3.
+
+(1i)
+```{r}
+library(leaps)
+select.mod=regsubsets(mpg~cylinders+displacement+horsepower+weight+acceleration+year+origin,data=Auto,method="backward")
+result=summary(select.mod)
+result
+result$adjr2
+which.max(result$adjr2)
+```
+Based on the adjusted R2 criterion, the model with 6 predictors is the best. The best model has cylinders, displacement, horsepower, weight, year, and origin as predictor variables.
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
